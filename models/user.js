@@ -43,7 +43,7 @@ class User {
         FROM users
         WHERE username = $1`,
         [username]
-    )
+    );
     const userHashedPw = result.rows[0];
     const isUserValid = await bcrypt.compare(password, userHashedPw.password);
 
