@@ -24,6 +24,19 @@ CREATE TABLE messages (
   read_at TIMESTAMP WITH TIME ZONE);
 
 
+INSERT INTO users (username, password, first_name, last_name, phone, join_at)
+  VALUES ('jia','password', 'jia', 'gan', '1234567890', current_timestamp);
+
+INSERT INTO users (username, password, first_name, last_name, phone, join_at)
+  VALUES ('julia','password', 'julia','williamson', '1234567890', current_timestamp);
+
+INSERT INTO messages (from_username, to_username, body, sent_at)
+  VALUES ('jia','julia','HELLOO', current_timestamp);
+
+INSERT INTO messages (from_username, to_username, body, sent_at)
+VALUES ('julia','jia','Hi! How is it going?', current_timestamp);
+
+
 \echo 'Delete and recreate messagely_test db?'
 \prompt 'Return for yes or control-C to cancel > ' foo
 
@@ -47,6 +60,22 @@ CREATE TABLE messages (
   body TEXT NOT NULL,
   sent_at TIMESTAMP WITH TIME ZONE NOT NULL,
   read_at TIMESTAMP WITH TIME ZONE);
+
+
+INSERT INTO users (username, password, first_name, last_name, phone, join_at)
+  VALUES ('jia','password', 'jia', 'gan', '1234567890', current_timestamp);
+
+INSERT INTO users (username, password, first_name, last_name, phone, join_at)
+  VALUES ('julia','password', 'julia','williamson', '1234567890', current_timestamp);
+
+INSERT INTO messages (from_username, to_username, body, sent_at)
+  VALUES ('jia','julia','HELLOO', current_timestamp);
+
+INSERT INTO messages (from_username, to_username, body, sent_at)
+VALUES ('julia','jia','Hi! How is it going?', current_timestamp);
+
+
+
 
 /** INSERT INTO users (username, password, first_name, last_name, phone, join_at) VALUES ('jia','password', 'jia', 'gan', '1234567890', current_timestamp); */
 

@@ -17,7 +17,8 @@ class User {
   static async register({ username, password, first_name, last_name, phone }) {
 
     const hashedPassword = await bcrypt.hash(
-      password, BCRYPT_WORK_FACTOR);
+      password, BCRYPT_WORK_FACTOR
+    );
 
     const result = await db.query(
           `INSERT INTO users (username,
@@ -137,9 +138,6 @@ class User {
         [username]
     );
 
-    // FIXME: validation for no user found? is that needed?
-    // check routes
-
     return result.rows.map(m => ({
       id: m.id,
       to_user: {
@@ -179,9 +177,6 @@ class User {
         [username]
     );
 
-    // FIXME: validation for no user found? is that needed
-    // check routes
-
     return result.rows.map(m => ({
       id: m.id,
       from_user : {
@@ -199,5 +194,9 @@ class User {
 
 
 module.exports = User;
+
+
+// FIXME: validation for no user found? is that needed
+// check routes
 
 // received_by and sent_to for message naming conventions
