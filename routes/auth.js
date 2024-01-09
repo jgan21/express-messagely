@@ -32,4 +32,15 @@ router.post("/login", async function(req, res, next){
  * {username, password, first_name, last_name, phone} => {token}.
  */
 
+router.post("/register", async function(req, res, next) {
+
+  // Register new user
+  const newUserInfo = await User.register(req.body);
+
+  // Send newUserInfo to login route, which returns token
+  return await res.send("/login", newUserInfo);
+
+});
+
+
 module.exports = router;
