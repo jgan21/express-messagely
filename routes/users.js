@@ -4,8 +4,6 @@ const Router = require("express").Router;
 const router = new Router();
 
 const User = require("../models/user");
-const { BadRequestError } = require("../expressError");
-const { SECRET_KEY } = require("../config");
 const { ensureLoggedIn,
         ensureCorrectUser,
         authenticateJWT } = require("../middleware/auth");
