@@ -21,7 +21,7 @@ class User {
     );
 
     const result = await db.query(
-          `INSERT INTO users (username,
+      `INSERT INTO users (username,
                               password,
                               first_name,
                               last_name,
@@ -30,7 +30,7 @@ class User {
              VALUES
               ($1, $2, $3, $4, $5, current_timestamp)
              RETURNING username, password, first_name, last_name, phone`,
-              [username, hashedPassword, first_name, last_name, phone]
+      [username, hashedPassword, first_name, last_name, phone]
     );
 
     return result.rows[0];
@@ -40,10 +40,10 @@ class User {
 
   static async authenticate(username, password) {
     const result = await db.query(
-          `SELECT password
+      `SELECT password
             FROM users
             WHERE username = $1`,
-        [username]
+      [username]
     );
 
     const user = result.rows[0];
@@ -51,13 +51,17 @@ class User {
 
     return isUserValid;
   }
+  // bug: before checking the passwords we need to make sure that we got a result
+  // for the user (we need to check if user exists, add another clause on line 50
+  // if user and bcrypt compare)
 
+  // be more explicit that bcrypt compare gives back boolean true
 
   /** Update last_login_at for user */
 
   static async updateLoginTimestamp(username) {
     const result = await db.query(
-          `UPDATE users
+      `UPDATE users
             SET last_login_at = current_timestamp
               WHERE username = $1
               RETURNING username, last_login_at`,
@@ -81,10 +85,12 @@ class User {
               first_name,
               last_name
          FROM users`
-    )
+    );
 
     return result.rows;
   }
+  // in general, whenever we're returning ALL of something it's nice to return
+  // it with ORDER BY so there's some organization
 
   /** Get: get user by username
    *
@@ -105,11 +111,11 @@ class User {
               last_login_at
          FROM users
          WHERE username = $1`,
-         [username]
+      [username]
     );
     const user = result.rows[0];
 
-    if(!user) throw new NotFoundError(`No such user: ${username}`);
+    if (!user) throw new NotFoundError(`No such user: ${username}`);
 
     return user;
   }
@@ -135,7 +141,7 @@ class User {
         FROM messages AS m
               JOIN users AS u ON m.to_username = u.username
         WHERE from_username = $1`,
-        [username]
+      [username]
     );
 
     return result.rows.map(m => ({
@@ -174,12 +180,12 @@ class User {
         FROM messages AS m
               JOIN users AS u ON m.from_username = u.username
         WHERE to_username = $1`,
-        [username]
+      [username]
     );
 
     return result.rows.map(m => ({
       id: m.id,
-      from_user : {
+      from_user: {
         username: m.from_username,
         first_name: m.first_name,
         last_name: m.last_name,
@@ -196,7 +202,5 @@ class User {
 module.exports = User;
 
 
-// FIXME: validation for no user found? is that needed
-// check routes
-
-// received_by and sent_to for message naming conventions
+// Possible update: feature that says whether a user has
+// 0 messages either sent/received (depending on what they're trying to find)
