@@ -5,18 +5,22 @@ const router = new Router();
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 
+const User = require("../models/user")
+
 const { UnauthorizedError, BadRequestError } = require("../expressError");
 const db = require("../db");
 const { authenticateJWT, ensureLoggedIn } = require("../middleware/auth");
 const { SECRET_KEY, BCRYPT_WORK_FACTOR } = require("../config");
 
-
 /** POST /login: {username, password} => {token} */
 
 router.post("/login", async function(req, res, next){
+  console.log("We are in the /login route")
+
   if (req.body === undefined) throw new BadRequestError();
 
   const { username, password } = req.body;
+  console.log("username=", username)
 
   if (await User.authenticate(username, password)){
     const token = jwt.sign({ username }, SECRET_KEY);
