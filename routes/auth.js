@@ -12,24 +12,6 @@ const db = require("../db");
 const { authenticateJWT, ensureLoggedIn } = require("../middleware/auth");
 const { SECRET_KEY, BCRYPT_WORK_FACTOR } = require("../config");
 
-/** POST /login: {username, password} => {token} */
-
-router.post("/login", async function(req, res, next){
-  console.log("We are in the /login route")
-
-  if (req.body === undefined) throw new BadRequestError();
-
-  const { username, password } = req.body;
-  console.log("username=", username)
-
-  if (await User.authenticate(username, password)){
-    const token = jwt.sign({ username }, SECRET_KEY);
-    return res.json({ token });
-  } else {
-    throw new UnauthorizedError("Invalid username/password");
-  }
-});
-
 
 /** POST /register: registers, logs in, and returns token.
  *
@@ -38,13 +20,46 @@ router.post("/login", async function(req, res, next){
 
 router.post("/register", async function(req, res, next) {
 
+  if (req.body === undefined) throw new BadRequestError();
+
   // Register new user
   const newUserInfo = await User.register(req.body);
 
+  // Get token for newly registered user
+  const token = jwt.sign({ newUserInfo }, SECRET_KEY);
+
   // Send newUserInfo to login route, which returns token
-  return await res.send("/login", newUserInfo);
+  next({ token });
+  // notes: await? next? what is the best method
 
 });
+
+
+
+/** POST /login: {username, password} => {token} */
+
+router.post("/login", async function(req, res, next){
+
+  console.log('princess tiana is logged in!');
+
+  if (req.body === undefined) throw new BadRequestError();
+
+  const { username, password } = req.body;
+
+  if (await User.authenticate(username, password)){
+    const token = jwt.sign({ username }, SECRET_KEY);
+
+    // Update most recent time logged in to current_timestamp
+    await User.updateLoginTimestamp(username);
+
+    return res.json({ token });
+  } else {
+    throw new UnauthorizedError("Invalid username/password");
+  }
+});
+
+
+
 
 
 module.exports = router;

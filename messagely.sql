@@ -25,10 +25,10 @@ CREATE TABLE messages (
 
 
 INSERT INTO users (username, password, first_name, last_name, phone, join_at)
-  VALUES ('jia','password', 'jia', 'gan', '1234567890', current_timestamp);
+  VALUES ('jia', '$2b$12$zTTfq380/U1ynE4AbWcURe.Bd2/6ZfvVpgCX6L3ifwpj/lz4bzX.G', 'jia', 'gan', '1234567890', current_timestamp);
 
 INSERT INTO users (username, password, first_name, last_name, phone, join_at)
-  VALUES ('julia','password', 'julia','williamson', '1234567890', current_timestamp);
+  VALUES ('julia','$2b$12$zTTfq380/U1ynE4AbWcURe.Bd2/6ZfvVpgCX6L3ifwpj/lz4bzX.G', 'julia','williamson', '1234567890', current_timestamp);
 
 INSERT INTO messages (from_username, to_username, body, sent_at)
   VALUES ('jia','julia','HELLOO', current_timestamp);
@@ -63,10 +63,10 @@ CREATE TABLE messages (
 
 
 INSERT INTO users (username, password, first_name, last_name, phone, join_at)
-  VALUES ('jia','password', 'jia', 'gan', '1234567890', current_timestamp);
+  VALUES ('jia','$2b$12$zTTfq380/U1ynE4AbWcURe.Bd2/6ZfvVpgCX6L3ifwpj/lz4bzX.G', 'jia', 'gan', '1234567890', current_timestamp);
 
 INSERT INTO users (username, password, first_name, last_name, phone, join_at)
-  VALUES ('julia','password', 'julia','williamson', '1234567890', current_timestamp);
+  VALUES ('julia','$2b$12$zTTfq380/U1ynE4AbWcURe.Bd2/6ZfvVpgCX6L3ifwpj/lz4bzX.G', 'julia','williamson', '1234567890', current_timestamp);
 
 INSERT INTO messages (from_username, to_username, body, sent_at)
   VALUES ('jia','julia','HELLOO', current_timestamp);
@@ -75,10 +75,3 @@ INSERT INTO messages (from_username, to_username, body, sent_at)
 VALUES ('julia','jia','Hi! How is it going?', current_timestamp);
 
 
-
-
-/** INSERT INTO users (username, password, first_name, last_name, phone, join_at) VALUES ('jia','password', 'jia', 'gan', '1234567890', current_timestamp); */
-
-/** INSERT INTO users (username, password, first_name, last_name, phone, join_at) VALUES ('julia','password', 'julia','williamson', '1234567890', current_timestamp); */
-
-/**INSERT INTO messages (from_username, to_username, body, sent_at) VALUES ('jia','Julia','HELLOO', current_timestamp); */
