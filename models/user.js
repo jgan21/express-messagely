@@ -47,15 +47,12 @@ class User {
     );
 
     const user = result.rows[0];
-    const isUserValid = await bcrypt.compare(password, user.password);
+    const isUserValid = (
+      user && (await bcrypt.compare(password, user.password) === true)
+    );
 
     return isUserValid;
   }
-  // bug: before checking the passwords we need to make sure that we got a result
-  // for the user (we need to check if user exists, add another clause on line 50
-  // if user and bcrypt compare)
-
-  // be more explicit that bcrypt compare gives back boolean true
 
   /** Update last_login_at for user */
 
@@ -84,13 +81,12 @@ class User {
       `SELECT username,
               first_name,
               last_name
-         FROM users`
+         FROM users
+         ORDER BY username`
     );
 
     return result.rows;
   }
-  // in general, whenever we're returning ALL of something it's nice to return
-  // it with ORDER BY so there's some organization
 
   /** Get: get user by username
    *
