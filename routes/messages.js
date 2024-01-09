@@ -37,7 +37,7 @@ router.get("/:id",
         );
       }
 
-  return res.json({ message });
+  return res.json({ message: message });
 })
 
 
@@ -48,6 +48,17 @@ router.get("/:id",
  *
  **/
 
+router.post("/",
+       ensureLoggedIn,
+       async function(req, res, next) {
+
+  const message = await Message.create({
+    from_username : res.locals.user.username,
+    to_username : req.body.to_username,
+    body: req.body.body
+  });
+  return res.json({ message: message })
+});
 
 /** POST/:id/read - mark message as read:
  *
@@ -56,6 +67,23 @@ router.get("/:id",
  * Makes sure that the only the intended recipient can mark as read.
  *
  **/
+
+router.post("/:id/read",
+       ensureLoggedIn,
+       async function(req, res, next) {
+
+  const id = req.params.id;
+  const message = await Message.get(id);
+
+  if (message.to_user.username !== res.locals.user.username) {
+      throw new UnauthorizedError(
+        "Invalid credentials: must be recipient to mark message as read."
+      );
+    }
+  const readMessage = await Message.markRead(id);
+
+  return res.json({ message: readMessage })
+});
 
 
 module.exports = router;
