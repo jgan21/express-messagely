@@ -3,6 +3,12 @@
 const Router = require("express").Router;
 const router = new Router();
 
+const User = require("../models/user");
+const { BadRequestError } = require("../expressError");
+const { SECRET_KEY } = require("../config")
+const { ensureLoggedIn,
+        ensureCorrectUser,
+        authenticateJWT } = require("../middleware/auth")
 
 /** GET / - get list of users.
  *
@@ -10,6 +16,10 @@ const router = new Router();
  *
  **/
 
+router.get("/", ensureLoggedIn, async function(req, res, next){
+  const users = await User.all();
+  return res.json({ users })
+})
 
 /** GET /:username - get detail of users.
  *
